@@ -2,97 +2,172 @@
 
 {% block content %}
 <div class="app-container">
-    <div class="card">
-        <h2><i class="fas fa-calculator"></i> Option Calculator</h2>
-        
-        <form id="optionForm">
-            <div class="form-grid">
-                <!-- (Previous form fields remain the same) -->
-                <div class="form-group">
-                    <label for="S">
-                        <i class="fas fa-dollar-sign"></i> Underlying Price (S)
-                    </label>
-                    <input type="number" id="S" step="0.01" value="100" required>
-                    <div class="input-hint">Current stock/asset price</div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="K">
-                        <i class="fas fa-bullseye"></i> Strike Price (K)
-                    </label>
-                    <input type="number" id="K" step="0.01" value="100" required>
-                    <div class="input-hint">Option strike/exercise price</div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="r">
-                        <i class="fas fa-percentage"></i> Risk-Free Rate (r)
-                    </label>
-                    <input type="number" id="r" step="0.0001" value="0.05" required>
-                    <div class="input-hint">Annual risk-free interest rate</div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="T">
-                        <i class="fas fa-clock"></i> Time to Maturity (T)
-                    </label>
-                    <input type="number" id="T" step="0.01" value="1.0" required>
-                    <div class="input-hint">Time to expiration in years</div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="sigma">
-                        <i class="fas fa-chart-bar"></i> Volatility (σ)
-                    </label>
-                    <input type="number" id="sigma" step="0.001" value="0.2" required>
-                    <div class="input-hint">Annual volatility (e.g., 0.2 for 20%)</div>
-                </div>
-                
-                <!-- NEW: Call/Put Button Selector -->
-                <div class="form-group">
-                    <label>
-                        <i class="fas fa-exchange-alt"></i> Option Type
-                    </label>
-                    <div class="option-type-selector">
-                        <button type="button" 
-                                class="option-btn call-btn active" 
-                                data-type="C">
-                            <i class="fas fa-arrow-up"></i>
-                            <span>Call Option</span>
-                            <div class="option-description">Right to BUY</div>
-                        </button>
-                        
-                        <button type="button" 
-                                class="option-btn put-btn" 
-                                data-type="P">
-                            <i class="fas fa-arrow-down"></i>
-                            <span>Put Option</span>
-                            <div class="option-description">Right to SELL</div>
-                        </button>
-                        
-                        <!-- Hidden input to store selected value for form submission -->
-                        <input type="hidden" id="optionType" name="type" value="C">
+    <!-- Top Row: Calculator + Result Side by Side -->
+    <div class="top-row">
+        <div class="card calculator-card">
+            <h2><i class="fas fa-calculator"></i> Option Calculator</h2>
+            
+            <form id="optionForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="S">
+                            <i class="fas fa-dollar-sign"></i> Underlying Price (S)
+                        </label>
+                        <input type="number" id="S" step="0.01" value="100" required>
+                        <div class="input-hint">Current stock/asset price</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="K">
+                            <i class="fas fa-bullseye"></i> Strike Price (K)
+                        </label>
+                        <input type="number" id="K" step="0.01" value="100" required>
+                        <div class="input-hint">Option strike/exercise price</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="r">
+                            <i class="fas fa-percentage"></i> Risk-Free Rate (r)
+                        </label>
+                        <input type="number" id="r" step="0.0001" value="0.05" required>
+                        <div class="input-hint">Annual risk-free interest rate (e.g., 0.05 for 5%)</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="T">
+                            <i class="fas fa-clock"></i> Time to Maturity (T)
+                        </label>
+                        <input type="number" id="T" step="0.01" value="1.0" required>
+                        <div class="input-hint">Time to expiration in years</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="sigma">
+                            <i class="fas fa-chart-bar"></i> Volatility (σ)
+                        </label>
+                        <input type="number" id="sigma" step="0.001" value="0.2" required>
+                        <div class="input-hint">Annual volatility (e.g., 0.2 for 20%)</div>
+                    </div>
+                    
+                    <!-- Call/Put Button Selector -->
+                    <div class="form-group full-width">
+                        <label>
+                            <i class="fas fa-exchange-alt"></i> Option Type
+                        </label>
+                        <div class="option-type-selector">
+                            <button type="button" 
+                                    class="option-btn call-btn active" 
+                                    data-type="C">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>Call Option</span>
+                                <div class="option-description">Right to BUY</div>
+                            </button>
+                            
+                            <button type="button" 
+                                    class="option-btn put-btn" 
+                                    data-type="P">
+                                <i class="fas fa-arrow-down"></i>
+                                <span>Put Option</span>
+                                <div class="option-description">Right to SELL</div>
+                            </button>
+                            
+                            <!-- Hidden input to store selected value for form submission -->
+                            <input type="hidden" id="optionType" name="type" value="C">
+                        </div>
                     </div>
                 </div>
-            </div>
-            
-            <button type="submit" class="btn btn-calculate">
-                <i class="fas fa-calculator"></i> Calculate Option Price
-            </button>
-        </form>
+                
+                <button type="submit" class="btn btn-calculate">
+                    <i class="fas fa-calculator"></i> Calculate Option Price
+                </button>
+            </form>
+        </div>
         
-        <!-- (Result card remains the same) -->
-        <div id="result" class="result-card hidden">
-            <h3><i class="fas fa-coins"></i> Option Price</h3>
-            <div class="price-display">
-                <span id="optionPrice">-</span>
-                <span class="price-label">USD</span>
+        <!-- Result card - RIGHT SIDE -->
+        <div id="result" class="card result-card hidden">
+            <div class="result-content">
+                <h3><i class="fas fa-coins"></i> Option Price</h3>
+                <div class="price-display">
+                    <span id="optionPrice">-</span>
+                    <span class="price-label">USD</span>
+                </div>
+                <div class="result-details">
+                    <p id="formulaInfo" class="formula-info"></p>
+                    <div class="option-status">
+                        <div class="status-item">
+                            <span class="status-label">Option Type:</span>
+                            <span id="optionTypeDisplay" class="status-value">Call</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">Status:</span>
+                            <span id="optionStatus" class="status-value">-</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">Calculated At:</span>
+                            <span id="calcTime" class="status-value">-</span>
+                        </div>
+                    </div>
+                </div>
+                <div id="errorMessage" class="error-message hidden"></div>
             </div>
-            <p id="formulaInfo" class="formula-info"></p>
-            <div id="errorMessage" class="error-message hidden"></div>
         </div>
     </div>
     
-    <!-- (Rest of the card remains the same) -->
+    <!-- About Section - FULL WIDTH BELOW -->
+    <div class="about-section">
+        <div class="card">
+            <h2><i class="fas fa-info-circle"></i> About Black-Scholes Model</h2>
+            <div class="info-content">
+                <div class="info-grid">
+                    <div class="info-column">
+                        <h3>Formula</h3>
+                        <p>For Call Options:</p>
+                        <div class="formula">
+                            C = S₀N(d₁) - Ke⁻ʳᵗN(d₂)
+                        </div>
+                        <p>For Put Options:</p>
+                        <div class="formula">
+                            P = Ke⁻ʳᵗN(-d₂) - S₀N(-d₁)
+                        </div>
+                        <p>Where:</p>
+                        <ul class="formula-vars">
+                            <li>S₀ = Current stock price</li>
+                            <li>K = Strike price</li>
+                            <li>r = Risk-free interest rate</li>
+                            <li>T = Time to maturity</li>
+                            <li>σ = Volatility of stock returns</li>
+                            <li>N() = Cumulative standard normal distribution</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="info-column">
+                        <h3>Key Features</h3>
+                        <ul class="formula-vars">
+                            <li>Pricing model for European-style options</li>
+                            <li>Assumes constant volatility and interest rates</li>
+                            <li>No dividends in basic model</li>
+                            <li>Log-normal distribution of stock prices</li>
+                            <li>Developed by Black, Scholes, and Merton (Nobel Prize 1997)</li>
+                            <li>Widely used in financial markets</li>
+                            <li>Foundation for many derivatives pricing models</li>
+                        </ul>
+                        
+                        <div class="example-section">
+                            <h3>Example Calculation</h3>
+                            <p>For a call option with:</p>
+                            <ul class="formula-vars">
+                                <li>Stock Price (S) = $100</li>
+                                <li>Strike Price (K) = $100</li>
+                                <li>Risk-free Rate (r) = 5%</li>
+                                <li>Time (T) = 1 year</li>
+                                <li>Volatility (σ) = 20%</li>
+                            </ul>
+                            <p class="example-result">The calculated option price would be approximately <strong>$10.45</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
