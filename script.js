@@ -1,14 +1,19 @@
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded - starting app');
+    
     const form = document.getElementById('optionForm');
     const resultCard = document.getElementById('result');
     const optionPrice = document.getElementById('optionPrice');
     const formulaInfo = document.getElementById('formulaInfo');
     const errorMessage = document.getElementById('errorMessage');
-    const hiddenTypeInput = document.getElementById('optionType');
+    const optionTypeDisplay = document.getElementById('optionTypeDisplay');
+    const optionStatus = document.getElementById('optionStatus');
+    const calcTime = document.getElementById('calcTime');
     
     // Get both option buttons
     const callBtn = document.querySelector('.call-btn');
     const putBtn = document.querySelector('.put-btn');
+    const hiddenTypeInput = document.getElementById('optionType');
     
     // Initialize with Call selected
     let selectedOptionType = 'C';
@@ -25,46 +30,19 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Function to select option type
     function selectOptionType(type) {
-        // Update selected type
         selectedOptionType = type;
         hiddenTypeInput.value = type;
+        optionTypeDisplay.textContent = type === 'C' ? 'Call Option' : 'Put Option';
         
         // Update button styles
         if (type === 'C') {
             callBtn.classList.add('active');
             putBtn.classList.remove('active');
-            
-            // Update result card theme if it's visible
-            if (!resultCard.classList.contains('hidden')) {
-                resultCard.classList.remove('put-result');
-                resultCard.classList.add('call-result');
-            }
         } else {
             putBtn.classList.add('active');
             callBtn.classList.remove('active');
-            
-            // Update result card theme if it's visible
-            if (!resultCard.classList.contains('hidden')) {
-                resultCard.classList.remove('call-result');
-                resultCard.classList.add('put-result');
-            }
-        }
-        
-        // Auto-calculate if form is already filled (optional)
-        if (shouldAutoRecalculate()) {
-            debouncedRecalculate();
         }
     }
-    
-    // Optional: Auto-recalculate when option type changes
-    function shouldAutoRecalculate() {
-        const S = document.getElementById('S').value;
-        const K = document.getElementById('K').value;
-        return S && K; // Only auto-recalculate if basic fields are filled
-    }
-    
-    // Debounced recalculation
-    const debouncedRecalculate = debounce(recalculateOption, 500);
     
     // Form submission handler
     form.addEventListener('submit', async function(e) {
@@ -75,11 +53,44 @@ document.addEventListener('DOMContentLoaded', function() {
     // Main calculation function
     async function calculateAndDisplay() {
         // Get form values
-        const stockPrice = document.getElementById('S').value;
-        const strikePrice = document.getElementById('K').value;
-        const riskFreeRate = document.getElementById('r').value;
-        const time = document.getElementById('T').value;
-        const volatility = document.getElementById('sigma').value;
+        const S = parseFloat(document.getElementById('S').value);
+        const K = parseFloat(document.getElementById('K').value);
+        const r = parseFloat(document.getElementById('r').value);
+        const T = parseFloat(document.getElementById('T').value);
+        const sigma = parseFloat(document.getElementById('sigma').value);
+        
+        // Validate inputs
+        if (isNaN(S) || isNaN(K) || isNaN(r) || isNaN(T) || isNaN(sigma)) {
+            showError('Please enter valid numbers for all fields');
+            return;
+        }
+        
+        if (S <= 0 || K <= 0 || T <= 0 || sigma <= 0) {
+            showError('All values must be positive numbers');
+            return;
+        }
+        
+        // Show loading state
+        const calculateBtn = document.querySelector('.btn-calculate');
+        const originalText = calculateBtn.innerHTML;
+        calculateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Calculating...';
+        calculateBtn.disabled = true;
+        
+        resultCard.classList.remove('hidden');
+        resultCard.classList.add('calculating');
+        optionPrice.textContent = '...';
+        optionStatus.textContent = 'Calculating...';
+        calcTime.textContent = '-';
+        
+        // Create request data
+        const requestData = {
+            'Stock Price': S,
+            'Strike Price': K,
+            'Risk-free rate': r,
+            'Time': T,
+            'Volatility': sigma,
+            'type': selectedOptionType
+        };
         
         try {
             const response = await fetch('/calculate', {
@@ -87,54 +98,137 @@ document.addEventListener('DOMContentLoaded', function() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                // CHANGED HERE: Using descriptive key names
-                body: JSON.stringify({
-                    'Stock Price': stockPrice,
-                    'Strike Price': strikePrice,
-                    'Risk-free rate': riskFreeRate,
-                    'Time': time,
-                    'Volatility': volatility,
-                    'type': selectedOptionType
-                })
+                body: JSON.stringify(requestData)
             });
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+            }
             
             const data = await response.json();
             
-            if (response.ok) {
-                // Display result
-                optionPrice.textContent = data.price.toFixed(4);
-                formulaInfo.textContent = data.formula_used;
+            // Display result
+            if (data.price !== undefined) {
+                const price = parseFloat(data.price);
+                optionPrice.textContent = '$' + price.toFixed(4);
+                formulaInfo.textContent = data.formula_used || 'Black-Scholes calculation';
                 
-                // Apply theme based on option type
-                resultCard.className = 'result-card';
+                // Determine option status
+                const isCall = selectedOptionType === 'C';
+                const intrinsicValue = isCall ? Math.max(S - K, 0) : Math.max(K - S, 0);
+                const timeValue = price - intrinsicValue;
+                
+                if (intrinsicValue > 0) {
+                    optionStatus.textContent = `In-the-Money ($${intrinsicValue.toFixed(2)} intrinsic + $${timeValue.toFixed(2)} time value)`;
+                } else if (intrinsicValue === 0) {
+                    optionStatus.textContent = `Out-of-the-Money ($${timeValue.toFixed(2)} time value)`;
+                }
+                
+                // Add timestamp
+                const now = new Date();
+                const timeString = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                calcTime.textContent = timeString;
+                
+                // Set theme based on option type
+                resultCard.className = 'card result-card';
                 if (selectedOptionType === 'C') {
                     resultCard.classList.add('call-result');
                 } else {
                     resultCard.classList.add('put-result');
                 }
-                resultCard.classList.remove('hidden');
                 
                 errorMessage.classList.add('hidden');
+                
+                // Log to console for debugging
+                console.log('Calculation successful:', {
+                    price: price,
+                    type: selectedOptionType === 'C' ? 'Call' : 'Put',
+                    intrinsicValue: intrinsicValue,
+                    timeValue: timeValue
+                });
             } else {
-                showError(data.error || 'An error occurred');
+                throw new Error('No price in response');
             }
+            
         } catch (error) {
-            showError('Network error: ' + error.message);
-        }
-    }
-    
-    // Optional: Recalculate function for auto-updates
-    async function recalculateOption() {
-        if (shouldAutoRecalculate()) {
-            await calculateAndDisplay();
+            console.error('Error:', error);
+            showError(error.message);
+            optionPrice.textContent = '-';
+            optionStatus.textContent = 'Error';
+            calcTime.textContent = '-';
+        } finally {
+            // Restore button
+            calculateBtn.innerHTML = originalText;
+            calculateBtn.disabled = false;
+            resultCard.classList.remove('calculating');
         }
     }
     
     function showError(message) {
-        errorMessage.textContent = message;
+        errorMessage.textContent = 'Error: ' + message;
         errorMessage.classList.remove('hidden');
-        resultCard.classList.add('hidden');
     }
+    
+    // Add example buttons
+    const exampleButtons = document.createElement('div');
+    exampleButtons.className = 'example-buttons';
+    
+    // Call example button
+    const callExampleBtn = document.createElement('button');
+    callExampleBtn.type = 'button';
+    callExampleBtn.className = 'btn btn-example';
+    callExampleBtn.innerHTML = '<i class="fas fa-chart-line"></i> Example: Call Option';
+    callExampleBtn.style.background = 'linear-gradient(135deg, #10b981 0%, #34d399 100%)';
+    
+    callExampleBtn.addEventListener('click', function() {
+        document.getElementById('S').value = 105.50;
+        document.getElementById('K').value = 100.00;
+        document.getElementById('r').value = 0.045;
+        document.getElementById('T').value = 0.75;
+        document.getElementById('sigma').value = 0.25;
+        selectOptionType('C');
+        setTimeout(() => calculateAndDisplay(), 100);
+    });
+    
+    // Put example button
+    const putExampleBtn = document.createElement('button');
+    putExampleBtn.type = 'button';
+    putExampleBtn.className = 'btn btn-example';
+    putExampleBtn.innerHTML = '<i class="fas fa-chart-line"></i> Example: Put Option';
+    putExampleBtn.style.background = 'linear-gradient(135deg, #ef4444 0%, #f87171 100%)';
+    
+    putExampleBtn.addEventListener('click', function() {
+        document.getElementById('S').value = 95.50;
+        document.getElementById('K').value = 100.00;
+        document.getElementById('r').value = 0.045;
+        document.getElementById('T').value = 0.75;
+        document.getElementById('sigma').value = 0.30;
+        selectOptionType('P');
+        setTimeout(() => calculateAndDisplay(), 100);
+    });
+    
+    // ATM example button
+    const atmExampleBtn = document.createElement('button');
+    atmExampleBtn.type = 'button';
+    atmExampleBtn.className = 'btn btn-example';
+    atmExampleBtn.innerHTML = '<i class="fas fa-balance-scale"></i> Example: ATM Option';
+    atmExampleBtn.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+    
+    atmExampleBtn.addEventListener('click', function() {
+        document.getElementById('S').value = 100.00;
+        document.getElementById('K').value = 100.00;
+        document.getElementById('r').value = 0.05;
+        document.getElementById('T').value = 1.0;
+        document.getElementById('sigma').value = 0.20;
+        selectOptionType('C');
+        setTimeout(() => calculateAndDisplay(), 100);
+    });
+    
+    exampleButtons.appendChild(callExampleBtn);
+    exampleButtons.appendChild(putExampleBtn);
+    exampleButtons.appendChild(atmExampleBtn);
+    form.appendChild(exampleButtons);
     
     // Input validation
     const inputs = document.querySelectorAll('input[type="number"]');
@@ -143,85 +237,24 @@ document.addEventListener('DOMContentLoaded', function() {
             if (this.value < 0) {
                 this.value = Math.abs(this.value);
             }
-            
-            // Optional: Auto-recalculate when inputs change
-            if (shouldAutoRecalculate()) {
-                debouncedRecalculate();
-            }
         });
     });
     
-    // Debounce utility function
-    function debounce(func, wait) {
-        let timeout;
-        return function executedFunction(...args) {
-            const later = () => {
-                clearTimeout(timeout);
-                func(...args);
-            };
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-        };
-    }
-    
-    // Example button (optional enhancement)
-    const exampleButton = document.createElement('button');
-    exampleButton.type = 'button';
-    exampleButton.className = 'btn btn-example';
-    exampleButton.innerHTML = '<i class="fas fa-rocket"></i> Load Call Example';
-    exampleButton.style.marginTop = '15px';
-    exampleButton.style.background = 'linear-gradient(135deg, #10b981 0%, #34d399 100%)';
-    
-    exampleButton.addEventListener('click', function() {
-        // Load example values for a Call option
-        document.getElementById('S').value = 105.50;
-        document.getElementById('K').value = 100.00;
-        document.getElementById('r').value = 0.045;
-        document.getElementById('T').value = 0.75;
-        document.getElementById('sigma').value = 0.25;
-        
-        // Select Call option
-        selectOptionType('C');
-        
-        // Auto-calculate
-        calculateAndDisplay();
+    // Auto-calculate when option type changes (optional feature)
+    callBtn.addEventListener('click', function() {
+        if (document.getElementById('S').value && document.getElementById('K').value) {
+            setTimeout(() => calculateAndDisplay(), 300);
+        }
     });
     
-    // Add a second example button for Put
-    const putExampleButton = document.createElement('button');
-    putExampleButton.type = 'button';
-    putExampleButton.className = 'btn btn-example';
-    putExampleButton.innerHTML = '<i class="fas fa-rocket"></i> Load Put Example';
-    putExampleButton.style.marginTop = '15px';
-    putExampleButton.style.background = 'linear-gradient(135deg, #ef4444 0%, #f87171 100%)';
-    putExampleButton.style.marginLeft = '10px';
-    
-    putExampleButton.addEventListener('click', function() {
-        // Load example values for a Put option
-        document.getElementById('S').value = 95.50;
-        document.getElementById('K').value = 100.00;
-        document.getElementById('r').value = 0.045;
-        document.getElementById('T').value = 0.75;
-        document.getElementById('sigma').value = 0.30;
-        
-        // Select Put option
-        selectOptionType('P');
-        
-        // Auto-calculate
-        calculateAndDisplay();
+    putBtn.addEventListener('click', function() {
+        if (document.getElementById('S').value && document.getElementById('K').value) {
+            setTimeout(() => calculateAndDisplay(), 300);
+        }
     });
     
-    // Add buttons to form
-    const buttonContainer = document.createElement('div');
-    buttonContainer.style.display = 'flex';
-    buttonContainer.style.gap = '10px';
-    buttonContainer.appendChild(exampleButton);
-    buttonContainer.appendChild(putExampleButton);
-    form.appendChild(buttonContainer);
-    
-    // Keyboard shortcuts (optional)
+    // Add keyboard shortcuts
     document.addEventListener('keydown', function(e) {
-        // Ctrl+1 for Call, Ctrl+2 for Put
         if (e.ctrlKey) {
             if (e.key === '1') {
                 e.preventDefault();
@@ -236,12 +269,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Show keyboard shortcut hint
-    const shortcutHint = document.createElement('div');
-    shortcutHint.className = 'shortcut-hint';
-    shortcutHint.innerHTML = '<small>Tip: Use Ctrl+1 for Call, Ctrl+2 for Put, Alt+Enter to calculate</small>';
-    shortcutHint.style.marginTop = '10px';
-    shortcutHint.style.color = '#64748b';
-    shortcutHint.style.fontSize = '0.85rem';
-    form.appendChild(shortcutHint);
+    console.log('App initialization complete');
+    
+    // Auto-calculate on page load with default values
+    setTimeout(() => {
+        if (document.getElementById('S').value && document.getElementById('K').value) {
+            calculateAndDisplay();
+        }
+    }, 500);
 });
