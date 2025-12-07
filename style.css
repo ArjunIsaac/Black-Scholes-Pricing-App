@@ -16,6 +16,7 @@ body {
     margin: 0 auto;
 }
 
+/* Header */
 header {
     text-align: center;
     color: white;
@@ -43,7 +44,7 @@ header h1 i {
     font-weight: 300;
 }
 
-/* Main container */
+/* Main Layout */
 .app-container {
     display: flex;
     flex-direction: column;
@@ -51,20 +52,14 @@ header h1 i {
     margin-bottom: 40px;
 }
 
-/* Top Row: Calculator + Result Side by Side */
 .top-row {
     display: grid;
-    grid-template-columns: 1.2fr 0.8fr; /* Calculator wider, Result narrower */
+    grid-template-columns: 1.2fr 0.8fr;
     gap: 30px;
     align-items: start;
 }
 
-@media (max-width: 992px) {
-    .top-row {
-        grid-template-columns: 1fr;
-    }
-}
-
+/* Card Base Styles */
 .card {
     background: white;
     border-radius: 20px;
@@ -89,7 +84,7 @@ header h1 i {
     color: #667eea;
 }
 
-/* Calculator Card - Wider */
+/* Calculator Card */
 .calculator-card {
     min-height: 550px;
     display: flex;
@@ -102,12 +97,6 @@ header h1 i {
     gap: 20px;
     flex-grow: 1;
     margin-bottom: 30px;
-}
-
-@media (max-width: 768px) {
-    .calculator-card .form-grid {
-        grid-template-columns: 1fr;
-    }
 }
 
 .form-group {
@@ -161,12 +150,6 @@ header h1 i {
     margin-top: 10px;
 }
 
-@media (max-width: 768px) {
-    .option-type-selector {
-        flex-direction: column;
-    }
-}
-
 .option-btn {
     flex: 1;
     padding: 20px 10px;
@@ -206,7 +189,7 @@ header h1 i {
     font-style: italic;
 }
 
-/* Call Button Styles */
+/* Call & Put Button States */
 .call-btn {
     color: #10b981;
     border-color: #10b981;
@@ -224,7 +207,6 @@ header h1 i {
     color: rgba(255, 255, 255, 0.9);
 }
 
-/* Put Button Styles */
 .put-btn {
     color: #ef4444;
     border-color: #ef4444;
@@ -242,13 +224,11 @@ header h1 i {
     color: rgba(255, 255, 255, 0.9);
 }
 
-/* Active state for both buttons */
 .option-btn.active {
     transform: scale(1.02);
     font-weight: 700;
 }
 
-/* Disable the default button styles */
 .option-btn:focus {
     outline: none;
 }
@@ -286,6 +266,14 @@ header h1 i {
     transform: none;
 }
 
+/* Example Buttons */
+.example-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 25px;
+    flex-wrap: wrap;
+}
+
 .btn-example {
     flex: 1;
     min-width: 180px;
@@ -310,7 +298,7 @@ header h1 i {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Result Card - Taller to match calculator */
+/* Result Card */
 .result-card {
     min-height: 550px;
     display: flex;
@@ -365,7 +353,6 @@ header h1 i {
     font-size: 3.5rem;
     font-weight: 800;
     color: #2d3748;
-    display: block;
     line-height: 1.2;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
@@ -373,7 +360,6 @@ header h1 i {
 .price-label {
     font-size: 1.2rem;
     color: #64748b;
-    display: block;
     margin-top: 8px;
     font-weight: 500;
 }
@@ -398,7 +384,6 @@ header h1 i {
     border-radius: 12px;
     padding: 20px;
     margin-top: 15px;
-    width: 100%;
     border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
@@ -425,34 +410,15 @@ header h1 i {
     text-align: right;
 }
 
-/* About Section - Full Width Below */
-.about-section {
-    width: 100%;
-}
-
+/* About Section */
 .about-section .card {
     padding: 40px;
-}
-
-.info-content {
-    width: 100%;
 }
 
 .info-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 40px;
-}
-
-@media (max-width: 768px) {
-    .info-grid {
-        grid-template-columns: 1fr;
-        gap: 30px;
-    }
-    
-    .about-section .card {
-        padding: 25px;
-    }
 }
 
 .info-column {
@@ -488,8 +454,7 @@ header h1 i {
 }
 
 .formula-vars li {
-    padding: 8px 0;
-    padding-left: 30px;
+    padding: 8px 0 8px 30px;
     position: relative;
     color: #4a5568;
     line-height: 1.5;
@@ -532,14 +497,13 @@ header h1 i {
     font-size: 1.2rem;
 }
 
-/* Error message styling */
+/* Error & Loading States */
 .error-message {
     background: #fed7d7;
     color: #9b2c2c;
     padding: 15px;
     border-radius: 10px;
     margin-top: 20px;
-    width: 100%;
     font-weight: 500;
     border-left: 4px solid #f56565;
 }
@@ -548,7 +512,6 @@ header h1 i {
     display: none;
 }
 
-/* Loading animation */
 @keyframes pulse {
     0% { opacity: 0.6; }
     50% { opacity: 1; }
@@ -563,19 +526,13 @@ header h1 i {
     background: rgba(255, 255, 255, 0.6);
 }
 
-/* Example buttons container */
-.example-buttons {
-    display: flex;
-    gap: 15px;
-    margin-top: 25px;
-    flex-wrap: wrap;
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
-.example-buttons .btn-example {
-    flex: 1;
-    min-width: 180px;
-    padding: 12px;
-    font-size: 0.95rem;
+.fa-spinner {
+    animation: spin 1s linear infinite;
 }
 
 /* Footer */
@@ -600,23 +557,20 @@ footer p {
     margin-top: 20px;
 }
 
-/* Spinner animation */
-.fa-spinner {
-    animation: spin 1s linear infinite;
+/* Responsive Design */
+@media (max-width: 992px) {
+    .top-row {
+        grid-template-columns: 1fr;
+    }
 }
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-/* Responsive adjustments */
 @media (max-width: 768px) {
-    .calculator-card .form-grid {
+    .calculator-card .form-grid,
+    .info-grid {
         grid-template-columns: 1fr;
     }
     
-    .calculator-card .option-type-selector {
+    .option-type-selector {
         flex-direction: column;
     }
     
@@ -634,6 +588,10 @@ footer p {
     
     .about-section .card {
         padding: 25px;
+    }
+    
+    .info-grid {
+        gap: 30px;
     }
 }
 
@@ -654,7 +612,7 @@ footer p {
         flex-direction: column;
     }
     
-    .example-buttons .btn-example {
+    .btn-example {
         min-width: 100%;
     }
     
