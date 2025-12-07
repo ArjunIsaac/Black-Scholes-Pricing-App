@@ -18,6 +18,20 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize with Call selected
     let selectedOptionType = 'C';
     
+    // Initialize empty state
+    function initializeEmptyState() {
+        optionPrice.textContent = '-';
+        optionTypeDisplay.textContent = 'Call';
+        optionStatus.textContent = '-';
+        calcTime.textContent = '-';
+        formulaInfo.textContent = 'Enter values and click "Calculate"';
+        resultCard.className = 'card result-card'; // Reset to default state
+        errorMessage.classList.add('hidden');
+    }
+    
+    // Initialize on page load
+    initializeEmptyState();
+    
     // Handle Call button click
     callBtn.addEventListener('click', function() {
         selectOptionType('C');
@@ -76,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function() {
         calculateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Calculating...';
         calculateBtn.disabled = true;
         
-        resultCard.classList.remove('hidden');
+        // Show loading state in result card
         resultCard.classList.add('calculating');
         optionPrice.textContent = '...';
         optionStatus.textContent = 'Calculating...';
@@ -157,6 +171,7 @@ document.addEventListener('DOMContentLoaded', function() {
             optionPrice.textContent = '-';
             optionStatus.textContent = 'Error';
             calcTime.textContent = '-';
+            resultCard.className = 'card result-card'; // Reset to default on error
         } finally {
             // Restore button
             calculateBtn.innerHTML = originalText;
@@ -188,7 +203,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('T').value = 0.75;
         document.getElementById('sigma').value = 0.25;
         selectOptionType('C');
-        setTimeout(() => calculateAndDisplay(), 100);
     });
     
     // Put example button
@@ -205,7 +219,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('T').value = 0.75;
         document.getElementById('sigma').value = 0.30;
         selectOptionType('P');
-        setTimeout(() => calculateAndDisplay(), 100);
     });
     
     // ATM example button
@@ -222,7 +235,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('T').value = 1.0;
         document.getElementById('sigma').value = 0.20;
         selectOptionType('C');
-        setTimeout(() => calculateAndDisplay(), 100);
     });
     
     exampleButtons.appendChild(callExampleBtn);
@@ -240,41 +252,5 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Auto-calculate when option type changes (optional feature)
-    callBtn.addEventListener('click', function() {
-        if (document.getElementById('S').value && document.getElementById('K').value) {
-            setTimeout(() => calculateAndDisplay(), 300);
-        }
-    });
-    
-    putBtn.addEventListener('click', function() {
-        if (document.getElementById('S').value && document.getElementById('K').value) {
-            setTimeout(() => calculateAndDisplay(), 300);
-        }
-    });
-    
-    // Add keyboard shortcuts
-    document.addEventListener('keydown', function(e) {
-        if (e.ctrlKey) {
-            if (e.key === '1') {
-                e.preventDefault();
-                selectOptionType('C');
-            } else if (e.key === '2') {
-                e.preventDefault();
-                selectOptionType('P');
-            } else if (e.key === 'Enter' && e.altKey) {
-                e.preventDefault();
-                calculateAndDisplay();
-            }
-        }
-    });
-    
     console.log('App initialization complete');
-    
-    // Auto-calculate on page load with default values
-    setTimeout(() => {
-        if (document.getElementById('S').value && document.getElementById('K').value) {
-            calculateAndDisplay();
-        }
-    }, 500);
 });
