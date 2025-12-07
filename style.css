@@ -54,7 +54,7 @@ header h1 i {
 
 .top-row {
     display: grid;
-    grid-template-columns: 1.2fr 0.8fr;
+    grid-template-columns: 1.1fr 0.9fr; /* Calculator slightly smaller */
     gap: 30px;
     align-items: start;
 }
@@ -63,7 +63,7 @@ header h1 i {
 .card {
     background: white;
     border-radius: 20px;
-    padding: 35px;
+    padding: 30px; /* Reduced padding for calculator */
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
 }
@@ -74,8 +74,8 @@ header h1 i {
 
 .card h2 {
     color: #2d3748;
-    margin-bottom: 25px;
-    font-size: 1.8rem;
+    margin-bottom: 20px; /* Reduced margin */
+    font-size: 1.7rem; /* Slightly smaller font */
     font-weight: 600;
 }
 
@@ -84,23 +84,22 @@ header h1 i {
     color: #667eea;
 }
 
-/* Calculator Card */
+/* Calculator Card - Smaller */
 .calculator-card {
-    min-height: 550px;
+    min-height: 500px; /* Reduced height */
     display: flex;
     flex-direction: column;
 }
 
-.calculator-card .form-grid {
+.form-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-    flex-grow: 1;
-    margin-bottom: 30px;
+    gap: 18px; /* Reduced gap */
+    margin-bottom: 25px; /* Reduced margin */
 }
 
 .form-group {
-    margin-bottom: 10px;
+    margin-bottom: 8px; /* Reduced margin */
 }
 
 .form-group.full-width {
@@ -111,60 +110,58 @@ header h1 i {
     display: block;
     color: #4a5568;
     font-weight: 500;
-    margin-bottom: 8px;
-    font-size: 0.95rem;
+    margin-bottom: 6px; /* Reduced margin */
+    font-size: 0.9rem; /* Slightly smaller */
 }
 
 .form-group label i {
-    margin-right: 8px;
-    width: 20px;
+    margin-right: 6px; /* Reduced margin */
 }
 
-.form-group input[type="number"] {
+input[type="number"] {
     width: 100%;
-    padding: 15px;
+    padding: 12px; /* Reduced padding */
     border: 2px solid #e2e8f0;
     border-radius: 10px;
-    font-size: 1.1rem;
+    font-size: 1rem; /* Slightly smaller */
     transition: all 0.3s ease;
     font-family: 'Inter', sans-serif;
 }
 
-.form-group input[type="number"]:focus {
+input[type="number"]:focus {
     outline: none;
     border-color: #667eea;
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
 .input-hint {
-    font-size: 0.85rem;
+    font-size: 0.8rem; /* Slightly smaller */
     color: #718096;
-    margin-top: 5px;
+    margin-top: 4px; /* Reduced margin */
     font-style: italic;
 }
 
 /* Option Type Selector */
 .option-type-selector {
     display: flex;
-    gap: 15px;
-    margin-top: 10px;
+    gap: 12px; /* Reduced gap */
+    margin-top: 8px; /* Reduced margin */
 }
 
 .option-btn {
     flex: 1;
-    padding: 20px 10px;
+    padding: 18px 8px; /* Reduced padding */
     border: 2px solid transparent;
     border-radius: 12px;
     background: #f8fafc;
     cursor: pointer;
     transition: all 0.3s ease;
     text-align: center;
-    font-family: 'Inter', sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 110px;
+    min-height: 100px; /* Reduced height */
 }
 
 .option-btn:hover {
@@ -173,18 +170,18 @@ header h1 i {
 }
 
 .option-btn i {
-    font-size: 1.8rem;
-    margin-bottom: 8px;
+    font-size: 1.6rem; /* Slightly smaller */
+    margin-bottom: 6px; /* Reduced margin */
 }
 
 .option-btn span {
-    font-size: 1.1rem;
+    font-size: 1rem; /* Slightly smaller */
     font-weight: 600;
-    margin-bottom: 4px;
+    margin-bottom: 3px; /* Reduced margin */
 }
 
 .option-description {
-    font-size: 0.85rem;
+    font-size: 0.8rem; /* Slightly smaller */
     opacity: 0.8;
     font-style: italic;
 }
@@ -229,25 +226,20 @@ header h1 i {
     font-weight: 700;
 }
 
-.option-btn:focus {
-    outline: none;
-}
-
 /* Buttons */
 .btn {
     width: 100%;
-    padding: 18px;
+    padding: 16px; /* Reduced padding */
     border: none;
     border-radius: 12px;
-    font-size: 1.1rem;
+    font-size: 1rem; /* Slightly smaller */
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    font-family: 'Inter', sans-serif;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 8px; /* Reduced gap */
 }
 
 .btn-calculate {
@@ -269,27 +261,25 @@ header h1 i {
 /* Example Buttons */
 .example-buttons {
     display: flex;
-    gap: 15px;
-    margin-top: 25px;
+    gap: 12px; /* Reduced gap */
+    margin-top: 20px; /* Reduced margin */
     flex-wrap: wrap;
 }
 
 .btn-example {
     flex: 1;
-    min-width: 180px;
-    padding: 12px;
-    margin-top: 15px;
+    min-width: 170px; /* Slightly smaller */
+    padding: 10px; /* Reduced padding */
     border: none;
     border-radius: 10px;
-    font-size: 0.95rem;
+    font-size: 0.9rem; /* Slightly smaller */
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    font-family: 'Inter', sans-serif;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 6px; /* Reduced gap */
     color: white;
 }
 
@@ -298,24 +288,20 @@ header h1 i {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Result Card */
+/* Result Card - Always visible */
 .result-card {
-    min-height: 550px;
+    min-height: 500px; /* Reduced to match calculator */
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 30px;
-    border: 2px solid transparent;
-    transition: all 0.3s ease;
+    border: 2px solid #e2e8f0; /* Default border when empty */
+    background: white; /* Default background when empty */
 }
 
 .result-content {
     width: 100%;
     text-align: center;
-}
-
-.result-card.hidden {
-    display: none;
 }
 
 .result-card.call-result {
@@ -329,8 +315,8 @@ header h1 i {
 }
 
 .result-card h3 {
-    font-size: 1.8rem;
-    margin-bottom: 30px;
+    font-size: 1.7rem; /* Slightly smaller */
+    margin-bottom: 25px; /* Reduced margin */
     color: #2d3748;
     font-weight: 600;
 }
@@ -341,8 +327,8 @@ header h1 i {
 
 /* Price Display */
 .price-display {
-    margin: 30px 0;
-    padding: 25px 20px;
+    margin: 25px 0; /* Reduced margin */
+    padding: 20px; /* Reduced padding */
     background: rgba(255, 255, 255, 0.9);
     border-radius: 15px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -350,7 +336,7 @@ header h1 i {
 }
 
 #optionPrice {
-    font-size: 3.5rem;
+    font-size: 3rem; /* Slightly smaller */
     font-weight: 800;
     color: #2d3748;
     line-height: 1.2;
@@ -358,39 +344,37 @@ header h1 i {
 }
 
 .price-label {
-    font-size: 1.2rem;
+    font-size: 1.1rem; /* Slightly smaller */
     color: #64748b;
-    margin-top: 8px;
+    margin-top: 6px; /* Reduced margin */
     font-weight: 500;
 }
 
 /* Result Details */
 .result-details {
-    margin-top: 25px;
-    width: 100%;
+    margin-top: 20px; /* Reduced margin */
 }
 
 .formula-info {
-    font-size: 0.9rem;
+    font-size: 0.85rem; /* Slightly smaller */
     color: #475569;
     text-align: center;
     font-style: italic;
-    margin-bottom: 20px;
+    margin-bottom: 15px; /* Reduced margin */
     padding: 0 15px;
 }
 
 .option-status {
     background: rgba(255, 255, 255, 0.9);
     border-radius: 12px;
-    padding: 20px;
-    margin-top: 15px;
+    padding: 18px; /* Reduced padding */
     border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .status-item {
     display: flex;
     justify-content: space-between;
-    padding: 10px 0;
+    padding: 8px 0; /* Reduced padding */
     border-bottom: 1px solid #e2e8f0;
 }
 
@@ -401,48 +385,46 @@ header h1 i {
 .status-label {
     font-weight: 600;
     color: #475569;
-    font-size: 0.95rem;
+    font-size: 0.9rem; /* Slightly smaller */
 }
 
 .status-value {
     color: #2d3748;
     font-weight: 500;
-    text-align: right;
 }
 
 /* About Section */
 .about-section .card {
-    padding: 40px;
+    padding: 35px; /* Reduced padding */
 }
 
 .info-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 40px;
+    gap: 35px; /* Reduced gap */
 }
 
 .info-column {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 18px; /* Reduced gap */
 }
 
 .info-column h3 {
     color: #2d3748;
-    margin-bottom: 10px;
-    font-size: 1.4rem;
+    margin-bottom: 8px; /* Reduced margin */
+    font-size: 1.3rem; /* Slightly smaller */
     font-weight: 600;
     border-bottom: 2px solid #e2e8f0;
-    padding-bottom: 8px;
+    padding-bottom: 6px; /* Reduced padding */
 }
 
 .formula {
     font-family: 'Courier New', monospace;
     background: #f8fafc;
-    padding: 20px;
+    padding: 18px; /* Reduced padding */
     border-radius: 10px;
-    margin: 10px 0;
-    font-size: 1.3rem;
+    font-size: 1.2rem; /* Slightly smaller */
     color: #2d3748;
     border-left: 4px solid #667eea;
     text-align: center;
@@ -454,10 +436,9 @@ header h1 i {
 }
 
 .formula-vars li {
-    padding: 8px 0 8px 30px;
+    padding: 6px 0 6px 25px; /* Reduced padding */
     position: relative;
     color: #4a5568;
-    line-height: 1.5;
 }
 
 .formula-vars li:before {
@@ -465,12 +446,12 @@ header h1 i {
     color: #667eea;
     font-weight: bold;
     position: absolute;
-    left: 10px;
+    left: 8px; /* Adjusted position */
 }
 
 .example-section {
-    margin-top: 20px;
-    padding: 25px;
+    margin-top: 18px; /* Reduced margin */
+    padding: 22px; /* Reduced padding */
     background: linear-gradient(135deg, #f6f9ff 0%, #edf2f7 100%);
     border-radius: 12px;
     border-left: 4px solid #10b981;
@@ -482,11 +463,11 @@ header h1 i {
 }
 
 .example-result {
-    margin-top: 15px;
-    padding: 15px;
+    margin-top: 12px; /* Reduced margin */
+    padding: 12px; /* Reduced padding */
     background: white;
     border-radius: 8px;
-    font-size: 1.1rem;
+    font-size: 1rem; /* Slightly smaller */
     color: #2d3748;
     border: 1px solid #e2e8f0;
 }
@@ -494,16 +475,16 @@ header h1 i {
 .example-result strong {
     color: #10b981;
     font-weight: 700;
-    font-size: 1.2rem;
+    font-size: 1.1rem; /* Slightly smaller */
 }
 
 /* Error & Loading States */
 .error-message {
     background: #fed7d7;
     color: #9b2c2c;
-    padding: 15px;
+    padding: 12px; /* Reduced padding */
     border-radius: 10px;
-    margin-top: 20px;
+    margin-top: 15px; /* Reduced margin */
     font-weight: 500;
     border-left: 4px solid #f56565;
 }
@@ -512,23 +493,18 @@ header h1 i {
     display: none;
 }
 
+/* Animations */
 @keyframes pulse {
-    0% { opacity: 0.6; }
+    0%, 100% { opacity: 0.6; }
     50% { opacity: 1; }
-    100% { opacity: 0.6; }
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }
 
 .result-card.calculating {
     animation: pulse 1.5s infinite;
-}
-
-.result-card.calculating .price-display {
-    background: rgba(255, 255, 255, 0.6);
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
 }
 
 .fa-spinner {
@@ -539,7 +515,7 @@ header h1 i {
 footer {
     text-align: center;
     color: white;
-    padding: 30px;
+    padding: 25px; /* Reduced padding */
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
     border-radius: 15px;
@@ -547,14 +523,13 @@ footer {
 }
 
 footer p {
-    margin: 10px 0;
+    margin: 8px 0; /* Reduced margin */
 }
 
 .disclaimer {
-    font-size: 0.9rem;
+    font-size: 0.85rem; /* Slightly smaller */
     opacity: 0.8;
     font-style: italic;
-    margin-top: 20px;
 }
 
 /* Responsive Design */
@@ -565,7 +540,7 @@ footer p {
 }
 
 @media (max-width: 768px) {
-    .calculator-card .form-grid,
+    .form-grid,
     .info-grid {
         grid-template-columns: 1fr;
     }
@@ -574,24 +549,25 @@ footer p {
         flex-direction: column;
     }
     
-    .calculator-card .option-btn {
-        min-height: 90px;
+    .option-btn {
+        min-height: 85px; /* Adjusted */
     }
     
     #optionPrice {
-        font-size: 2.8rem;
+        font-size: 2.5rem; /* Adjusted */
     }
     
-    .result-card {
-        min-height: 450px;
+    .result-card,
+    .calculator-card {
+        min-height: 450px; /* Adjusted */
     }
     
     .about-section .card {
-        padding: 25px;
+        padding: 22px; /* Adjusted */
     }
     
     .info-grid {
-        gap: 30px;
+        gap: 25px; /* Adjusted */
     }
 }
 
@@ -601,11 +577,11 @@ footer p {
     }
     
     #optionPrice {
-        font-size: 2.5rem;
+        font-size: 2.2rem; /* Adjusted */
     }
     
     .result-card h3 {
-        font-size: 1.5rem;
+        font-size: 1.4rem; /* Adjusted */
     }
     
     .example-buttons {
@@ -621,6 +597,6 @@ footer p {
     }
     
     .card {
-        padding: 25px;
+        padding: 22px; /* Adjusted */
     }
 }
